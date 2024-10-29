@@ -8,7 +8,7 @@ public class RegisterPetUseCase
     {
         return new ResponseRegisterPetJson
         {
-            Id = 1,
+            Id = 7,
             Name = request.Name,
         };
     }
