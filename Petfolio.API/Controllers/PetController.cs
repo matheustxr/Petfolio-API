@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Petfolio.Application.UseCases.Pet.GetAll;
+using Petfolio.Application.UseCases.Pet.GetByID;
 using Petfolio.Application.UseCases.Pet.Register;
 using Petfolio.Application.UseCases.Pet.Update;
 using Petfolio.Communication.Reponses;
@@ -13,7 +15,7 @@ public class PetController : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(ResponseRegisterPetJson), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
-    public IActionResult Register([FromBody] RequestPetJson request)
+    public IActionResult Register([FromBody] RequestRegisterPetJson request)
     {
         var response = new RegisterPetUseCase().Execute(request);
 
@@ -21,15 +23,52 @@ public class PetController : ControllerBase
     }
 
     [HttpPut]
-    [Route("{id}")]
+    [Route("{Id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
-    public IActionResult Update([FromRoute] int id, [FromBody] RequestPetJson request)
+    public IActionResult Update([FromRoute] int id, [FromBody] RequestRegisterPetJson request)
     {
         var useCase = new UpdatePetUseCase();
 
         useCase.Execute(id, request);
 
         return NoContent();
+    }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(ResponseAllPetJson), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
+    public IActionResult GetAll()
+    {
+        var useCase = new GetAllPetsUseCase();
+
+        var response = useCase.Execute();
+
+        if (response.Pets.Any())
+        {
+            return Ok(response);
+        }
+
+        return NoContent();
+    }
+
+    [HttpGet]
+    [Route("{Id}")]
+    [ProducesResponseType(typeof(ResponseGetById), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status404NotFound)]
+    public IActionResult GetByID(int Id)
+    {
+        var useCase = new GetPetByIdUseCase();
+
+        var response = useCase.Execute();
+
+        int idFalse = 7;
+
+        if (Id == idFalse)
+        {
+            return NotFound();
+        }
+
+        return Ok(response);
     }
 }
