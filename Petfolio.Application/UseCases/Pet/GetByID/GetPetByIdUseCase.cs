@@ -4,12 +4,13 @@ namespace Petfolio.Application.UseCases.Pet.GetByID;
 
 public class GetPetByIdUseCase
 {
-    public ResponseGetById Execute()
+    public ResponseGetByIdPetJson Execute(int Id)
     {
-        return new ResponseGetById
+        return new ResponseGetByIdPetJson
         {
+            Id = Id,
             Name = "Pink",
-            Birthday = DateTime.Now, //precisa trocar
+            Birthday = new DateTime( year: 2020, month: 1, day: 1 ),
             Type = Communication.Enums.PetType.Dog,
         };
     }

@@ -54,21 +54,30 @@ public class PetController : ControllerBase
 
     [HttpGet]
     [Route("{Id}")]
-    [ProducesResponseType(typeof(ResponseGetById), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResponseGetByIdPetJson), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status404NotFound)]
     public IActionResult GetByID(int Id)
     {
         var useCase = new GetPetByIdUseCase();
 
-        var response = useCase.Execute();
+        var response = useCase.Execute(Id);
 
         int idFalse = 7;
 
-        if (Id == idFalse)
+        if (Id != idFalse)
         {
             return NotFound();
         }
 
         return Ok(response);
+    }
+
+    [HttpDelete]
+    [Route("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status404NotFound)]
+    public IActionResult DeleteById(int Id)
+    {
+        var useCase = new 
     }
 }
