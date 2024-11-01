@@ -2,4 +2,8 @@
 
 public class DeletePetUseCase
 {
+    public void Execute(int Id)
+    {
+
+    }
 }
